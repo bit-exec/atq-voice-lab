@@ -214,6 +214,7 @@ TTS_ENGINES = {
     "luxtts": "LuxTTS",
     "chatterbox": "Chatterbox TTS",
     "chatterbox_turbo": "Chatterbox Turbo",
+    "chatterbox_nano": "Chatterbox Nano",
     "tada": "TADA",
     "kokoro": "Kokoro",
 }
@@ -342,6 +343,15 @@ def _get_non_qwen_tts_configs() -> list[ModelConfig]:
             engine="chatterbox_turbo",
             hf_repo_id="ResembleAI/chatterbox-turbo",
             size_mb=1500,
+            needs_trim=True,
+            languages=["en"],
+        ),
+        ModelConfig(
+            model_name="chatterbox-nano",
+            display_name="Chatterbox Nano (English, CPU-friendly)",
+            engine="chatterbox_nano",
+            hf_repo_id="ResembleAI/chatterbox-nano",
+            size_mb=0,
             needs_trim=True,
             languages=["en"],
         ),
@@ -711,6 +721,10 @@ def get_tts_backend_for_engine(engine: str) -> TTSBackend:
             from .chatterbox_turbo_backend import ChatterboxTurboTTSBackend
 
             backend = ChatterboxTurboTTSBackend()
+        elif engine == "chatterbox_nano":
+            from .chatterbox_nano_backend import ChatterboxNanoTTSBackend
+
+            backend = ChatterboxNanoTTSBackend()
         elif engine == "tada":
             from .hume_backend import HumeTadaBackend
 
